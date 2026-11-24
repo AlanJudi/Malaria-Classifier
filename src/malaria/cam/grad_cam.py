@@ -17,6 +17,12 @@ logger = logging.getLogger(__name__)
 
 
 def upsample_heatmap(map, img):
+    """ Upsample the heatmap to match the size of the input image and apply a color map.
+    Args:
+        map (np.ndarray): The heatmap to be upsampled.
+        img (np.ndarray): The original input image.
+    Returns:
+        np.ndarray: The upsampled heatmap with color mapping applied."""
 
     m, M = map.min(), map.max()
 
