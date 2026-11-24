@@ -1,12 +1,32 @@
 """ Grad-CAM implementation for malaria classifier """
 
-from pyexpat import model
-
-from xml.parsers.expat import model
+import logging
+import cv2
+import numpy as np
 
 import torch.nn as nn
 
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s"
+)
 
+
+SZ = 128
+logger = logging.getLogger(__name__)
+
+
+def upsample_heatmap(map, img):
+
+    m, M = map.min(), map.max()
+
+    map = 255 * ((map -m) / (M-m))
+    map = np.unit8(map)
+    map = cv2.resize(map, (SZ, SZ))
+    map = cv2.applyColorMap(255-map, cv2.COLORMAP_JET)
+    map = np.uint8(map)
+    map = np.unit8(map*0.7 + img*0.3)
+
+    return map 
 
 
 def get_im2fmap(model):
@@ -26,4 +46,18 @@ def img2grad_cam(x, model):
     logits = model(x)
     heatmaps = []
     im2fmap = get_im2fmap(model)
-    activation = im2fmap(x)
+    activations = im2fmap(x)
+    logger.info("Activation shape: %s", activations.shape)
+
+    pred = logits.max(-1)[1]
+    model.zero_grad()
+    logits[0,pred].backward(retain_graph=True)
+    pooled_grads= model.model[-6][1].weight.grad.data.mean((1,2,3))
+
+    for i in range(activations.shape[1]):
+        activations[:,i,:,:] *= pooled_grads[i]
+
+    heatmap = torch.mean(activations, dim=1)[0].cpu().detach()
+
+    return heatmap, 'Uninfected' if pred.item() else 'Parasitized'
+
