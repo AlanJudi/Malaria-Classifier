@@ -14,7 +14,6 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 id2int = {"Parasitized": 1, "Uninfected": 0}
-device = 'cuda' if torch.cuda.is_available() else "cpu"
 
 
 class MalariaImages(Dataset):
@@ -43,8 +42,10 @@ class MalariaImages(Dataset):
         _imgs, classes = list(zip(*batch))
         if self.transform:
             imgs = [self.transform(img) for img in _imgs]
+        else:
+            imgs = [torch.tensor(img).permute(2,0,1).float() / 255 for img in _imgs]
 
-        classes = [torch.tensor([id2int[c] for c in classes])]
-        imgs, classes = [torch.cat(i).to(device) for i in [imgs, classes]]
+        classes = torch.tensor([id2int[c] for c in classes])
+        imgs = torch.stack(imgs)
 
         return imgs, classes, _imgs
