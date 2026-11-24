@@ -54,3 +54,5 @@ coverage.xml
 .env.*
 !.env.example
 !.env.sample
+cell-images-for-detecting-malaria.zip
+cell_images/**/*

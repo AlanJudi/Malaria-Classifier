@@ -37,6 +37,10 @@ clone the repository and setup a uv environment
  - source .venv/bin/activate
  - uv run train
 
+Obtaining data from kaggle (download kaggle cli and load/unzip the data)
+ - kaggle datasets download -d iarunava/cell-images-for-detecting-malaria
+ - unzip -qq cell-images-for-detecting-malaria.zip
+
 ## Notes
 
 - Heatmaps are visual explanations, not a complete or guaranteed description of model behavior.

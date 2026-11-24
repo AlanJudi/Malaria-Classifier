@@ -10,6 +10,7 @@ readme = "README.md"
 requires-python = ">=3.11,<3.12"
 license = "MIT"
 dependencies = [
+    "kaggle",
     "numpy==1.26.4",
     "open3d; sys_platform == 'linux' and platform_machine == 'x86_64'",
     "opencv-python==4.9.0.80",
@@ -17,8 +18,10 @@ dependencies = [
     "pandas==2.2.3",
     "scikit-learn==1.8.0",
     "scipy==1.15.3",
+    "six",
     "torch==2.8.0+cu129; sys_platform == 'linux'",
     "torchvision==0.23.0+cu129; sys_platform == 'linux'",
+    "torch_snippets",
     "tqdm==4.67.1",
 ]
 
