@@ -2,6 +2,7 @@
 
 import glob
 import logging
+from pathlib import Path
 import argparse
 import yaml
 import torch
@@ -151,6 +152,11 @@ def train(args: argparse.Namespace):
     n_epochs = hyp["epochs"]
 
 
+    save_dir = Path(args.save_dir)
+    save_dir.mkdir(parents=True, exist_ok=True)
+    best_path = save_dir / "best.pt"
+    best_val_loss = float("inf")
+
     log = Report(n_epochs)
     for epoch in range(n_epochs):
         N = len(train_dl)
@@ -159,11 +165,36 @@ def train(args: argparse.Namespace):
             log.record(epoch+(ix+1)/N, trn_loss=loss, trn_acc=acc, end="\r")
 
         N = len(val_dl)
+        val_losses, val_accs = [], []
         for ix, batch in enumerate(val_dl):
             loss, acc = validate_batch(model, batch, criterion)
+            val_losses.append(loss)
+            val_accs.append(acc)
             log.record(epoch+(ix+1)/N, val_loss=loss, val_acc=acc, end="\r")
 
         log.report_avgs(epoch+1)
+
+        epoch_val_loss = float(np.mean(val_losses))
+        epoch_val_acc = float(np.mean(val_accs))
+        if epoch_val_loss < best_val_loss:
+            best_val_loss = epoch_val_loss
+            torch.save(
+                {
+                    "epoch": epoch + 1,
+                    "model_state_dict": model.state_dict(),
+                    "optimizer_state_dict": optimizer.state_dict(),
+                    "val_loss": epoch_val_loss,
+                    "val_acc": epoch_val_acc,
+                    "hyp": hyp,
+                },
+                best_path,
+            )
+            logger.info(
+                "Epoch %d: val_loss improved to %.4f (val_acc %.4f), saved to %s",
+                epoch + 1, epoch_val_loss, epoch_val_acc, best_path,
+            )
+
+    logger.info("Training complete. Best val_loss: %.4f (%s)", best_val_loss, best_path)
 
 def parse_args():
     """Parse command-line arguments."""
@@ -179,6 +210,12 @@ def parse_args():
         type=str,
         default="/home/alanj/Projects/classifier/src/config/hyp.yaml",
         help="Path to the hyperparameters YAML file   ",
+    )
+    parser.add_argument(
+        "--save-dir",
+        type=str,
+        default="/home/alanj/Projects/classifier/weights",
+        help="Directory where the best model checkpoint (best.pt) is saved",
     )
     return parser.parse_args()
 
