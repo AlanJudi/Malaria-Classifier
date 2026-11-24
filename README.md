@@ -10,6 +10,22 @@ This project explores convolutional neural-network classifiers and visualizes wh
 - Overlaying the CAM on the source image to produce a heatmap
 - Comparing the model’s visual evidence with the corresponding class label
 
+![Example showing gradient CAM for a ResNet implementation. Grad-CAM is class discriminative and does not require modification of the model architecture: https://arxiv.org/pdf/1610.02391](CAM.png)
+
+- We use the img2grad_cam function (classifier/src/malaria/cam/grad_cam.py) to expose the gradient of the last convolution in order to calculate the heat map using the following formula:
+
+$$
+L^{c}_{\text{Grad-CAM}} = \mathrm{ReLU}\left( \underbrace{\sum_{k} \alpha^{c}_{k} A^{k}}_{\text{linear combination}} \right)
+$$
+
+Where we calculate $$ \alpha^{c}_{k}$$, a weighted attributed to each activation map for a specific class, using the following formula:
+
+$$
+\alpha^{c}_{k} = \overbrace{\frac{1}{Z} \sum_{i} \sum_{j}}^{\text{global average pooling}} \underbrace{\frac{\partial y^{c}}{\partial A^{k}_{ij}}}_{\text{gradients via backprop}}
+$$
+
+Notice that $$A^{k}_{ij}$$ is the feature map containing activations $$A^{k}$$ of a convolution layer (5th one in our case). The choice of the last convolutional layer is deliberate here due to the fact that it has the widest receptive field, We find that Grad-CAM maps become worse as we move to earlier convolutional layers, as they have smaller receptive fields and only focus on less semantic local features. 
+
 ## Concept
 
 A class activation map highlights the spatial locations that contribute most strongly to a particular class score. A CAM is typically produced by weighting the final convolutional feature maps and reducing them to a two-dimensional heatmap. Interpreting the heatmap does not prove that a model understands an object, but it provides a useful qualitative view of where the network is looking.
