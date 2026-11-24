@@ -27,7 +27,7 @@ $$
 \alpha^{c}_{k} = \overbrace{\frac{1}{Z} \sum_{i} \sum_{j}}^{\text{global average pooling}} \underbrace{\frac{\partial y^{c}}{\partial A^{k}_{ij}}}_{\text{gradients via backprop}}
 $$
 
-Notice that $$A^{k}_{ij}$$ is the feature map containing activations $$A^{k}$$ of a convolution layer (6th one in our case). The choice of the last convolutional layer is deliberate here due to the fact that it has the widest receptive field, We find that Grad-CAM maps become worse as we move to earlier convolutional layers, as they have smaller receptive fields and only focus on less semantic local features. 
+Notice that $$A^{k}_{ij}$$ is the feature map containing activations $$A^{k}$$ of a convolution layer (6th one in our case). The choice of the last convolutional layer is deliberate here due to the fact that it has the largest receptive field, We find that Grad-CAM maps become worse as we move to earlier convolutional layers, as they have smaller receptive fields and only focus on less semantic local features. 
 
 ## Concept
 
