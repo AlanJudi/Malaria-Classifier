@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=69", "wheel"]
+requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -22,6 +22,9 @@ dependencies = [
     "tqdm==4.67.1",
 ]
 
+[project.scripts]
+train = "malaria.train:train"
+
 [project.optional-dependencies]
 dev = [
     "mypy",
@@ -29,19 +32,9 @@ dev = [
     "ruff",
 ]
 
-
-[tool.setuptools.package-dir]
-"" = "src"
-
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["classifier.malaria*"]
-namespaces = true
-
-[tool.setuptools.package-data]
-"classifier.malaria" = [
-    "README.md"
-]
+include = ["malaria*"]
 
 
 [[tool.uv.index]]

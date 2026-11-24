@@ -1,0 +1,44 @@
+# Image Classifier with Class Activation Maps
+
+This project explores convolutional neural-network classifiers and visualizes which regions in an image influence a model’s prediction.
+
+## What it contains
+
+- Training or loading a PyTorch image classifier
+- Running forward passes and extracting the predicted class
+- Computing a class activation map (CAM) from convolutional feature maps
+- Overlaying the CAM on the source image to produce a heatmap
+- Comparing the model’s visual evidence with the corresponding class label
+
+## Concept
+
+A class activation map highlights the spatial locations that contribute most strongly to a particular class score. A CAM is typically produced by weighting the final convolutional feature maps and reducing them to a two-dimensional heatmap. Interpreting the heatmap does not prove that a model understands an object, but it provides a useful qualitative view of where the network is looking.
+
+## Typical workflow
+
+1. Configure the dataset and PyTorch data loaders.
+2. Load or train a pretrained convolutional neural network.
+3. Pass an image through the network.
+4. Select the target class, usually the predicted class.
+5. Capture the activations and gradients or other class-discriminative weights from the relevant convolutional layer.
+6. Combine the feature maps into a heatmap and it upscale it to match the input image.
+7. Overlay the heatmap on the original image for inspection.
+
+## Requirements
+
+A Python environment with PyTorch, torchvision, NumPy, and a plotting/image package such as Matplotlib and OpenCV or PIL is typically required. A GPU can speed up training and inference but is not required for a few test images.
+
+## Usage
+
+clone the repository and setup a uv environment
+ - git clone https://github.com/AlanJudi/malaria-classifier.git
+ - curl -LsSf https://astral.sh/uv/install.sh | sh
+ - uv venv --python==3.11 
+ - source .venv/bin/activate
+ - uv run train
+
+## Notes
+
+- Heatmaps are visual explanations, not a complete or guaranteed description of model behavior.
+- The selected convolutional layer affects the spatial detail and receptive-field coverage of the visualization.
+- Preprocessing and normalization should match those used by the pretrained model.
