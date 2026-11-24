@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "classifier"
+version = "0.1.0"
+description = "Disease classification library"
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+license = "MIT"
+dependencies = [
+    "numpy==1.26.4",
+    "open3d; sys_platform == 'linux' and platform_machine == 'x86_64'",
+    "opencv-python==4.9.0.80",
+    "openpyxl",
+    "pandas==2.2.3",
+    "scikit-learn==1.8.0",
+    "scipy==1.15.3",
+    "torch==2.8.0+cu129; sys_platform == 'linux'",
+    "torchvision==0.23.0+cu129; sys_platform == 'linux'",
+    "tqdm==4.67.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "mypy",
+    "pytest>=9.0.2",
+    "ruff",
+]
+
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["classifier.malaria*"]
+namespaces = true
+
+[tool.setuptools.package-data]
+"classifier.malaria" = [
+    "README.md"
+]
+
+
+[[tool.uv.index]]
+name = "pytorch-cu129"
+url = "https://download.pytorch.org/whl/cu129"
+explicit = true
+
+[tool.uv.sources]
+torch = [
+    { index = "pytorch-cu129", marker = "sys_platform == 'linux'" },
+]
+torchvision = [
+    { index = "pytorch-cu129", marker = "sys_platform == 'linux'" },
+]
