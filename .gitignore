@@ -48,7 +48,7 @@ coverage.xml
 *.log
 *.tmp
 *.temp
-
+*.pt
 # Local environment settings (keep example templates)
 .env
 .env.*
@@ -56,3 +56,4 @@ coverage.xml
 !.env.sample
 cell-images-for-detecting-malaria.zip
 cell_images/**/*
+weights/best.pt

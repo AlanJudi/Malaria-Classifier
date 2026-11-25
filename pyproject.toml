@@ -27,6 +27,7 @@ dependencies = [
 
 [project.scripts]
 train = "malaria.train:main"
+inference = "malaria.inference:infer"
 
 [project.optional-dependencies]
 dev = [

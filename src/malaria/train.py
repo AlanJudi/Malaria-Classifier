@@ -14,6 +14,7 @@ from torch.utils.data import DataLoader
 from sklearn.model_selection import train_test_split
 from malaria.data.datasets import MalariaImages
 from malaria.models.Malaria import MalariaClassifier
+from malaria.utils.util import parse_args
 from torch_snippets import Report
 
 logging.basicConfig(
@@ -195,29 +196,6 @@ def train(args: argparse.Namespace):
             )
 
     logger.info("Training complete. Best val_loss: %.4f (%s)", best_val_loss, best_path)
-
-def parse_args():
-    """Parse command-line arguments."""
-    parser = argparse.ArgumentParser(description="Malaria Detection Training Script")
-    parser.add_argument(
-        "--data",
-        type=str,
-        default="/home/alanj/Projects/classifier/src/config/data.yaml",
-        help="Path to the dataset",
-    )
-    parser.add_argument(
-        "--hyp",
-        type=str,
-        default="/home/alanj/Projects/classifier/src/config/hyp.yaml",
-        help="Path to the hyperparameters YAML file   ",
-    )
-    parser.add_argument(
-        "--save-dir",
-        type=str,
-        default="/home/alanj/Projects/classifier/weights",
-        help="Directory where the best model checkpoint (best.pt) is saved",
-    )
-    return parser.parse_args()
 
 
 

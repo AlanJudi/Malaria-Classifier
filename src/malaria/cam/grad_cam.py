@@ -12,26 +12,26 @@ logging.basicConfig(
 )
 
 
-SZ = 128
 logger = logging.getLogger(__name__)
 
 
-def upsample_heatmap(map, img):
+def upsample_heatmap(map, img, SZ):
     """ Upsample the heatmap to match the size of the input image and apply a color map.
     Args:
         map (np.ndarray): The heatmap to be upsampled.
         img (np.ndarray): The original input image.
+        SZ (int): The size to which the heatmap should be upsampled.
     Returns:
         np.ndarray: The upsampled heatmap with color mapping applied."""
 
     m, M = map.min(), map.max()
 
     map = 255 * ((map -m) / (M-m))
-    map = np.unit8(map)
+    map = np.uint8(map)
     map = cv2.resize(map, (SZ, SZ))
     map = cv2.applyColorMap(255-map, cv2.COLORMAP_JET)
     map = np.uint8(map)
-    map = np.unit8(map*0.7 + img*0.3)
+    map = np.uint8(map*0.7 + img*0.3)
 
     return map 
 
@@ -50,6 +50,8 @@ def get_im2fmap(model):
 def img2grad_cam(x, model):
     """Compute Grad-CAM for a given input image and model."""
     model.eval()
+    device = next(model.parameters()).device
+    x = x.to(device)
     logits = model(x)
     heatmaps = []
     im2fmap = get_im2fmap(model)
