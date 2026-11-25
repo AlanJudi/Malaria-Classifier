@@ -24,7 +24,7 @@ Grad-CAM is class-discriminative and doesn't require any changes to the model ar
 <p align="center">
   <img src="images/malaria_2.png" alt="Second parasitized example" width="500">
   <br>
-  <em>Second prominent malaria case: the model focuses on the purple stains in the cell</em>
+  <em>Prominent malaria case: the model focuses on the purple stains in the cell</em>
 </p>
 
 <p align="center">
