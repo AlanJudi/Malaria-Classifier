@@ -73,6 +73,7 @@ clone the repository and setup a uv environment
  - uv venv --python==3.11 
  - source .venv/bin/activate
  - uv run train
+ - uv run inference
 
 Obtaining data from kaggle (download kaggle cli and load/unzip the data)
  - kaggle datasets download -d iarunava/cell-images-for-detecting-malaria

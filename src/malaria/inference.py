@@ -14,11 +14,6 @@ from malaria.utils.util import load_model
 
 logger = logging.getLogger(__name__)
 
-
-
-
-
-
 def infer():
     """Inference function for generating Grad-CAM heatmaps for malaria detection."""
     device = "cuda" if torch.cuda.is_available() else "cpu"
