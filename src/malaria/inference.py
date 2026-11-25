@@ -33,7 +33,6 @@ def infer():
         data_cfg = yaml.safe_load(f)
 
     val_dl, _train_dl = get_data(device=device, hyp=hyp, data_cfg=data_cfg)
-
     model, _epoch, _val_loss, _val_acc = load_model(Path(args.save_dir) / "best.pt", device=device)
 
     x, y, z = next(iter(val_dl))
