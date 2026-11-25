@@ -13,7 +13,7 @@ This project explores convolutional neural-network classifiers and visualizes wh
 
 ### Grad-CAM
 Example showing gradient CAM for a ResNet implementation. Grad-CAM is class discriminative and does not require modification of the model architecture: https://arxiv.org/pdf/1610.02391
-![Example showing gradient CAM for a ResNet implementation. Grad-CAM is class discriminative and does not require modification of the model architecture: https://arxiv.org/pdf/1610.02391](CAM.png)
+![Example showing gradient CAM for a ResNet implementation. Grad-CAM is class discriminative and does not require modification of the model architecture](malaria.png)
 
 - We use the img2grad_cam function (classifier/src/malaria/cam/grad_cam.py) to expose the gradient of the last convolution in order to calculate the heat map using the following formula:
 
